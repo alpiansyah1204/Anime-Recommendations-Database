@@ -87,7 +87,7 @@ df_rating = df_rating.dropna(axis = 0, how ='any')
 ```python
 df_anime.isnull().sum()
 ``` 
- terdapat 62 data kososng pada genre dan 230 pada rating. data ini akan kita hapus agar dapat kita gunakan utnuk membuat rekomendasi film data. 
+ terdapat 62 data kososng pada genre dan 230 pada rating. data ini akan kita hapus agar dapat kita gunakan utnuk membuat rekomendasi anime data. 
  - mengatasi data kosong dengan cara menghapusnya
  
 ```python
