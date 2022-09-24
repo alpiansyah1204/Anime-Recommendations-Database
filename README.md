@@ -111,9 +111,14 @@ tf.fit(df_anime['genre'])
 
 tfidf_matrix = tf.fit_transform(df_anime['genre']) 
 tfidf_matrix.shape
-
 ```
-output yang dihasilkan yaitu (12017, 47)
+output yang dihasilkan yaitu (12017, 47). Nilai 12017 merupakan ukuran data dan 47 merupakan matrik kategori genre. 
+
+- menghasilkan vektor tf-idf dalam bentuk matriks, kita menggunakan fungsi todense()
+```python
+tfidf_matrix.todense()
+```
+![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/matrik1.png?raw=True)
 
 **Kelebihan Content Based Filtering:**
 - Model tidak butuh data dari banyak user, karena rekomendasi spesifik untuk satu user.
