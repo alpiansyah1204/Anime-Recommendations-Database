@@ -24,36 +24,35 @@ Dalam proyek kali ini saya menggunakan dua teknik pendekatan sistem rekomendasi,
  
 ## Data Understanding
  
-*Dataset* yang saya gunakan adalah *dataset* Anime* Recommendations Database* dari* COOPERUNION*.* dataset* ini berisi 12,300 data pada* dataframe* anime.csv. Selain itu ada juga* Dataframe rating.csv* berisikan 7.813.737 data. 
+*Dataset* yang saya gunakan adalah *dataset* Anime *Recommendations Database* dari *COOPERUNION*. *dataset* ini berisi 12,300 data pada *dataframe anime.csv*. Selain itu ada juga *Dataframe rating.csv* berisikan 7.813.737 data. 
 
 Sumber: [Anime Recommendations Database](https://www.kaggle.com/datasets/CooperUnion/anime-recommendations-database).
  
 **Deskripsi Data**:  
-*
-- **anime.csv**
-  - anime_id - myanimelist.net's unique id identifying an anime.
-  - name - full name of anime.
-  - genre - comma separated list of genres for this anime.
-  - type - movie, TV, OVA, etc.
-  - episodes - how many episodes in this show. (1 if movie).
-  - rating - average rating out of 10 for this anime.
-  - members - number of community members that are in this anime's "group".
-- **rating.csv**
-  - user_id - non identifiable randomly generated user id.
-  - anime_id - the anime that this user has rated.
-  - rating - rating out of 10 this user has assigned (-1 if the user watched it but didn't assign a rating).
-  *
+
+- ***anime.csv**
+  - *anime_id - myanimelist.net's unique id identifying an anime.
+  - *name - full name of anime.
+  - *genre - comma separated list of genres for this anime.
+  - *type - movie, TV, OVA, etc.
+  - *episodes - how many episodes in this show. (1 if movie).
+  - *rating - average rating out of 10 for this anime.
+  - *members - number of community members that are in this anime's "group".
+- ***rating.csv**
+  - *user_id - non identifiable randomly generated user id.
+  - *anime_id - the anime that this user has rated.
+  - *rating - rating out of 10 this user has assigned (-1 if the user watched it but didn't assign a rating).
  
  
 **Exploratory Data Analysis**  
-- Menampilkan head data anime  
+- Menampilkan *head data anime  
 
   ![data anime](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/animeheadfirst.png?raw=True)
   
-- menampilkan jumlah genre anime pada dataset
+- menampilkan jumlah *genre* anime pada *dataset
 
   ![genre](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/genre.png?raw=True)
-  pada gambar di atas bisa dilihat bahwa total genre anime pada dataset ada 83 genre dari total 12,300 
+  pada gambar di atas bisa dilihat bahwa total *genre* anime pada dataset ada 83 *genre* dari total 12,300 
 - Menampilkan head data rating  
 
   ![data rating](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/ratingheadfitrst.png?raw=True)
@@ -65,49 +64,35 @@ Sumber: [Anime Recommendations Database](https://www.kaggle.com/datasets/CooperU
 
 ## Data Preparation
 tujuan dari data preparation untuk memastikan bahwa data mentah yang sedang disiapkan untuk diproses dan dianalisis akurat dan konsisten sehingga hasil rekomendasi dan analitik akan valid.
-
- 
+### Data Cleaning 
+*Data cleaning* yaitu proses mempersiapkan data untuk analisis dengan menghapus atau memodifikasi data yang tidak benar, tidak lengkap, tidak relevan, diduplikasi, atau diformat dengan tidak benar. pada program ini saya menghapus data tersebut. data yang kosong dopat ditemukan pada *genre* dan *rating*
+### Data Transform
+*Data Transform* adalah teknik mengubah data dari satu format ke format lainnya. Transformasi Data dapat dibagi menjadi langkah-langkah berikut. Masing-masing langkah ini akan diterapkan berdasarkan kompleksitas transformasi. teknik ini digunakan pada proyek ini seperti : 
+- melakukan persiapan data untuk menyandikan (*encode*) fitur *‘user_id’* dan *‘anime_id’* ke dalam indeks *integer*.
+- -memetakan *user_id* dan *anime_id* ke *dataframe* yang berkaitan.
+- Mengecek beberapa hal dalam data seperti jumlah *user*, jumlah anime, kemudian mengubah nilai *rating* menjadi *float.*
+ ### Feature Engineering
+ Membagi Data untuk Training dan Validasi untuk Collaborative Based Filtering. Hal ini dilakukan agar model kita menghindari masalah seperti overfitting dan underfitting.
 ## Modeling
  
 ### Model Content Based Filtering
+Pada content *Based Filtering*, saya menggunakan *TF-IDF Vectorizer* untuk membangun sistem rekomendasi berdasarkan genre anime. Alasannya adalah untuk menemukan representasi fitur penting dari setiap genre anime. Lalu, saya ubah vektor *tf-idf* dalam bentuk matriks dengan fungsi *todense().* Setelah itu, saya menghitung derajat kesamaan (*similarity degree*) antar anime dengan teknik *cosine similarity*. 
 Proses:
  
-- TF-IDF Vectorizer
-digunakan pada sistem rekomendasi untuk menemukan representasi fitur penting dari setiap kategori masakan genre.
-```python
-
-tf = TfidfVectorizer()
-tf.fit(df_anime['genre']) 
-```
-
-- fit dan transformasi ke dalam bentuk matriks. 
-```python
-
-tfidf_matrix = tf.fit_transform(df_anime['genre']) 
-tfidf_matrix.shape
-```
+- *TF-IDF Vectorizer*
+digunakan pada sistem rekomendasi untuk menemukan representasi fitur penting dari setiap kategori genre.
 output yang dihasilkan yaitu (12017, 47). Nilai 12017 merupakan ukuran data dan 47 merupakan matrik kategori genre. 
 
-- menghasilkan vektor tf-idf dalam bentuk matriks, kita menggunakan fungsi todense()
-```python
-tfidf_matrix.todense()
-```
+- menghasilkan vektor *tf-idf* dalam bentuk matriks, kita menggunakan fungsi *todense()*
 ![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/matrik1.png?raw=True)
 
-- Membuat dataframe untuk melihat tf-idf matrix
-```python
-pd.DataFrame(
-    tfidf_matrix.todense(), 
-    columns=tf.get_feature_names(),
-    index=df_anime.name
-).sample(22, axis=1).sample(10, axis=0)
-```
+- Membuat *dataframe* untuk melihat *tf-idf matrix*
 ![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/matrik1.png?raw=True)
 
-- matriks tf-idf untuk beberapa anime dan kategori anime  
+- matriks *tf-idf* untuk beberapa anime dan kategori anime  
 ![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/tdifmatrik.png?raw=True)
 
-- matriks kesamaan setiap anime dengan menampilkan nama restoran dalam 5 sampel kolom (axis = 1) dan 20 sampel baris (axis=0).
+- matriks kesamaan setiap anime dengan menampilkan nama restoran dalam 5 *sampel* kolom (axis = 1) dan 20 *sampel* baris (axis=0).
 ![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/testsample.png?raw=True)
 
 
@@ -118,73 +103,7 @@ pd.DataFrame(
 **Kekurangan Content Based Filtering:**
 - Model tidak dapat merekomendasikan hal yang baru untuk user.
  
-### Model Collaborative Filtering
-Proses:
- 
-- Menyandikan (encode) fitur user_id dan anime_id ke dalam indeks integer.
-- Memetakan user_id dan anime_id ke dataframe yang berkaitan lalu melakukan cek beberapa hal dalam data seperti jumlah user, jumlah anime, dan mengubah nilai rating menjadi float
-output yang didapat "Number of User: 234, Number of Anime: 2666, Min Rating: 1.0, Max Rating: 10.0"
-- Membagi data menjadi data training dan validasi dengan komposisi 80:20. lalu memetakan (mapping) data user dan anime menjadi satu value
-- membuat fungsi Rekomendasi
-```python
-class RecommenderNet(tf.keras.Model):
-
-  def __init__(self, num_users, num_anime, embedding_size, **kwargs):
-    super(RecommenderNet, self).__init__(**kwargs)
-    self.num_users = num_users
-    self.num_anime = num_anime
-    self.embedding_size = embedding_size
-    self.user_embedding = layers.Embedding(
-        num_users,
-        embedding_size,
-        embeddings_initializer = 'he_normal',
-        embeddings_regularizer = keras.regularizers.l2(1e-6)
-    )
-    self.user_bias = layers.Embedding(num_users, 1)
-    self.anime_embedding = layers.Embedding(
-        num_anime,
-        embedding_size,
-        embeddings_initializer = 'he_normal',
-        embeddings_regularizer = keras.regularizers.l2(1e-6)
-    )
-    self.anime_bias = layers.Embedding(num_anime, 1)
- 
-  def call(self, inputs):
-    user_vector = self.user_embedding(inputs[:,0])
-    user_bias = self.user_bias(inputs[:, 0])
-    anime_vector = self.anime_embedding(inputs[:, 1])
-    anime_bias = self.anime_bias(inputs[:, 1])
- 
-    dot_user_anime = tf.tensordot(user_vector, anime_vector, 2) 
- 
-    x = dot_user_anime + user_bias + anime_bias
-    
-    return tf.nn.sigmoid(x)
-```
-- Lalu pada pembuatan model, saya menggunakan RecommenderNet. Setelah itu saya me-compile model ini menggunakan Binary Crossentropy untuk menghitung loss function, Adam (Adaptive Moment Estimation) sebagai optimizer, dan root mean squared error (RMSE) sebagai metrics evaluation. Lalu, saya melatih model dengan batch size = 8, dan epoch = 100. Untuk mendapatkan rekomendasi, saya membuat fungsi untuk mendapatkan anime yang belum ditonton oleh user tersebut dengan mencocokkan anime_id yang berada di anime.csv dan rating.csv . 
-
-
-**Kelebihan Collaborative Filtering:**  
-- Model dapat merekomendasikan hal baru untuk di-explore oleh user.
-- Model dapat memberikan rekomendasi kepada user berdasarkan preferensi user lain yang mungkin mirip.
- 
-**Kekurangan Collaborative Filtering:**  
-- Model membutuhkan data banyak user.
- 
-## Evaluation
- 
-Metrik yang saya gunakan untuk model content based filtering adalah cosine similarity, sedangkan untuk model collaborative filtering, metrik yang saya gunakan adalah root mean squared error (RMSE).
- 
-**Cosine Similarity**:  
-Cosine Similarity diperoleh dari mengukur sudut cos antara dua vektor yang diproyeksikan dalam ruang multidimensi.  
-Rumus Cosine Similarity:  
- 
-**Root Mean Squared Error**:  
-Root Mean Squared Error atau RMSE diperoleh dari menghitung akar dari jumlah selisih kuadrat rata-rata nilai sebenarnya dengan nilai prediksi.  
-Rumus RMSE:  
- 
-### Model Content Based Filtering
-pada pengujian Model COntent Based rekomendasi yang diberikan cukup baik 
+pada pengujian Model *Content Based* rekomendasi yang diberikan cukup baik 
 
 ```python
 df_anime[df_anime.name.eq('Boku no Hero Academia')]
@@ -195,6 +114,49 @@ df_anime[df_anime.name.eq('Boku no Hero Academia')]
 - hasil uji coba 
 ![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/result%20bokunohero.png?raw=True)
 
+ 
+### Model Collaborative Filtering
+Proses:
+ 
+- Menyandikan (*encode*) fitur *user_id* dan *anime_id* ke dalam indeks *integer*.
+- Memetakan *user_id* dan *anime_id* ke dataframe yang berkaitan lalu melakukan cek beberapa hal dalam data seperti jumlah *user*, jumlah anime, dan mengubah nilai *rating* menjadi *float*
+*output* yang didapat "*Number of User: 234, Number of Anime: 2666, Min Rating: 1.0, Max Rating: 10.0"
+- Membagi data menjadi data training dan validasi dengan komposisi 80:20. lalu memetakan (*mapping*) data *user* dan anime menjadi satu *value*
+- membuat fungsi Rekomendasi
+- Lalu pada pembuatan model, saya menggunakan *RecommenderNet*. Setelah itu saya *me-compile* model ini menggunakan *Binary Crossentropy* untuk menghitung *loss function*, *Adam (Adaptive Moment Estimation)* sebagai *optimizer*, dan *root mean squared error (RMSE)* sebagai *metrics evaluation*. Lalu, saya melatih model dengan *batch size* = 8, dan *epoch* = 100. Untuk mendapatkan rekomendasi, saya membuat fungsi untuk mendapatkan anime yang belum ditonton oleh *user* tersebut dengan mencocokkan *anime_id* yang berada di *anime.csv* dan *rating.csv* . 
+
+**Kelebihan Collaborative Filtering:**  
+- Model dapat merekomendasikan hal baru untuk di-explore oleh *user*.
+- Model dapat memberikan rekomendasi kepada user berdasarkan preferensi user lain yang mungkin mirip.
+ 
+**Kekurangan Collaborative Filtering:**  
+- Model membutuhkan data banyak user.
+ 
+ hasil yang didapat dari model yang sudah dibaut mendapatkan hasil seperti berikut 
+
+![hasil  ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/top%2010%20anime.png?raw=True) 
+ 
+ 
+## Evaluation
+ 
+Metrik yang saya gunakan untuk model *content based filtering* adalah *cosine similarity*, sedangkan untuk model *collaborative filtering*, metrik yang saya gunakan adalah *root mean squared error (RMSE)*.
+ 
+**Cosine Similarity**:  
+*Cosine Similarity* diperoleh dari mengukur sudut cos antara dua vektor yang diproyeksikan dalam ruang multidimensi.  
+Rumus Cosine Similarity: 
+
+![Cosine  ](https://i0.wp.com/hendroprasetyo.com/wp-content/uploads/2020/04/image-3.png?resize=407%2C110&ssl=1?raw=True) 
+ 
+
+**Root Mean Squared Error**:  
+Root Mean Squared Error atau RMSE diperoleh dari menghitung akar dari jumlah selisih kuadrat rata-rata nilai sebenarnya dengan nilai prediksi.  
+Rumus RMSE:  
+
+![rmse  ](https://1.bp.blogspot.com/-AodtifmdR1U/X-NOXo0avGI/AAAAAAAACmI/_jvy7eLB72UB00dW_buPYZCa9ST2yx8XACNcBGAsYHQ/s453/rumus%2Brmse.jpg?raw=True) 
+ 
+ 
+### Model Content Based Filtering
+Pada Content Based Filtering, saya mencoba mengevaluasi model saya dengan memakai metrik precision. Maksud dari precision di sini adalah, berapa banyak genre yang sesuai dengan anime yang dipilih / jumlah rekomendasi. Saya membuat sebuah if loop yang akan membuat variabel 'a' bertambah satu jika genre sama persis dengan anime yang dipilih. Kodenya bisa dilihat seperti ini:
 presisi dari model yang dibuat 
 ```python
 a = 0
@@ -215,11 +177,7 @@ visualisasi metrik yang didapat dari model yang dilatih
 
 ![visuak ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/visualisasi.png?raw=True) 
 
-lalu hasil yang didapat 
 
-![hasil  ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/top%2010%20anime.png?raw=True) 
  
 ## Kesimpulan
 Dari hasil rekomendasi yang diberikan kedua model tersebut, menurut saya kedua model sudah dapat memberikan rekomendasi sesuai dengan yang diharapkan. Namun, untuk mencapai hasil yang lebih baik lagi.
-
-
