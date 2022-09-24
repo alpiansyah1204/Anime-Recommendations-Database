@@ -239,8 +239,11 @@ output "presisi darin model yang dibuat 100.0%"
 ### Model Collaborative Filtering
 Dari proses training yang dilakukan selama 100 epochs, diperoleh nilai error 0.1129 , dan 0.1518 untuk data validasi. Model dapat memberikan rekomendasi yang cukup baik. Terdapat beberapa anime dengan genre yang mirip dengan anime yang pernah ditonton user, namun juga ada beberapa anime dengan genre baru yang belum pernah ditonton user.
 visualisasi metrik yang didapat dari model yang dilatih 
+
 ![visuak ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/visualisasi.png?raw=True) 
+
 lalu hasil yang didapat 
+
 ![hasil  ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/top%2010%20anime.png?raw=True) 
  
 ## Kesimpulan
