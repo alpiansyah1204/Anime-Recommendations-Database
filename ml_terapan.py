@@ -146,7 +146,7 @@ cosine_sim = cosine_similarity(tfidf_matrix)
 cosine_sim
 
 """* Membuat dataframe dari variabel cosine_sim dengan baris dan kolom berupa nama anime
-* Melihat similarity matrix pada setiap resto
+* Melihat similarity matrix pada setiap anime
 """
 
 cosine_sim_df = pd.DataFrame(cosine_sim, index=df_anime['name'], columns=df_anime['name'])
@@ -178,7 +178,7 @@ df_anime[df_anime.name.eq('Boku no Hero Academia')]
 result = anime_recommendations('Boku no Hero Academia')
 result
 
-"""presisi darin model yang dibuat"""
+"""presisi dari model yang dibuat"""
 
 a = 0
 
@@ -391,3 +391,5 @@ print('----' * 8)
 recommended_anime = anime_df[anime_df['anime_id'].isin(recommended_anime_ids)]
 for row in recommended_anime.itertuples():
     print(row.name, ':', row.genre)
+
+"""**test**"""
