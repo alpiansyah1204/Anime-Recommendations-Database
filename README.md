@@ -4,8 +4,6 @@
  
 Anime adalah animasi komputer buatan tangan yang berasal dari Jepang yang telah menarik banyak pengikut di seluruh dunia. Budaya Jepang telah lama didominasi oleh anime dan manga, dengan gelombang pengakuan yang serupa antar generasi. Lebih beberapa tahun terakhir, pengakuan untuk anime dan *manga* rekan sketsanya telah tumbuh secara signifikan di Inggris Raya dan karena itu Barat. Karena kemampuannya yang khas untuk tumbuh bersama pemirsa, anime tidak diragukan lagi salah satu alasannya itu telah bertahan dalam ujian waktu dan tumbuh dalam kualitas di seluruh dunia. Meskipun anime sangat disukai di Inggris dan Di negara-negara barat, masih sedikit orang yang tidak memiliki rencana tentang apa itu anime. proyek ini bertujuan untuk mengembangkan rekomendasi atau sistem pilihan yang menawarkan saran kepada mereka yang baru mengenal dunia anime dengan menggunakan *KNN* dan *SVD algoritma*.
 
-Referensi: [ANIME RECOMMENDATION SYSTEM]([https://www.irjet.net/archives/V8/i5/IRJET-V8I5679.pdf](https://ijcrt.org/papers/IJCRT2201084.pdf))
- 
 ## Business Understanding
  
 ### Problem Statements
@@ -182,4 +180,10 @@ visualisasi metrik yang didapat dari model yang dilatih
 ## Kesimpulan
 Dari hasil rekomendasi yang diberikan kedua model tersebut, menurut saya kedua model sudah dapat memberikan rekomendasi sesuai dengan yang diharapkan. Namun, untuk mencapai hasil yang lebih baik lagi.
 
+## REFRENCES
+**[1]** Gorakala, Suresh K., and Michele Usuelli. Building a Recommendation System with R: Learn the Art of Building Robust and 
+Powerful Recommendation Engines Using R. Packt Publishing, 2015
 
+**[2]**  to recommend anime and mangas in a cold-start scenario IEEE 14th IAPR International
+
+**[3]** Conference on Document Analysis and Recognition (ICDAR) Vol 3 pp 21-26
