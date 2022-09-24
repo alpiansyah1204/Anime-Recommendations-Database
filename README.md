@@ -56,77 +56,65 @@ Sumber: [Anime Recommendations Database](https://www.kaggle.com/datasets/CooperU
 
   ![data rating](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/ratingheadfitrst.png?raw=True)
   
-- pada proyek kali ini hanya menggunakan 5000 data dengan cara menambahkan code 
-
-  ``` df_rating = df_rating.drop(range(20000, 7813737))  ``` 
   
 - melihat deskripsi pada dataset rating
 
   ![rating deskripsi](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/ratingdeskripsi.png?raw=True)
-  
+
+## Data Preparation
+
+- pada proyek kali ini hanya menggunakan 5000 data dengan cara menambahkan code 
+
+``` python
+df_rating = df_rating.drop(range(20000, 7813737)) 
+``` 
+
 - mengubah nilai rating -1 ke dalam NaN
 
-``` df_rating["rating"].replace({-1: np.nan}, inplace=True)  ``` 
+``` python
+df_rating["rating"].replace({-1: np.nan}, inplace=True)  
+``` 
 
 - menghapus baris atau kolom jika bernilai NA.
 
-``` df_rating = df_rating.dropna(axis = 0, how ='any')  ``` 
- 
+```python
+df_rating = df_rating.dropna(axis = 0, how ='any') 
+``` 
+
 - menghitung jumlah data null pada df_anime 
 
- ``` df_anime.isnull().sum() ``` 
- 
+```python
+df_anime.isnull().sum()
+``` 
+ terdapat 62 data kososng pada genre dan 230 pada rating. data ini akan kita hapus agar dapat kita gunakan utnuk membuat rekomendasi film data. 
  - mengatasi data kosong dengan cara menghapusnya
  
- ```df_anime =  df_anime.dropna()``` 
- 
-## Data Preparation
- 
-- Menggabungkan dataframe movies dan ratings. Tujuannya adalah agar kita dapat mengetahui film yang pernah ditonton user dan memfilter film yang belum pernah dinilai user.
-  ```python
-  df_fix = pd.merge(movies, ratings, on='movieId', how='left')
-  ```
-- Drop kolom timestamp. Data ini di-drop karena tidak dibutuhkan untuk membuat rekomendasi film.
-  ```python
-  df_fix.drop('timestamp', axis=1, inplace=True)
-  ```
-- Menangani missing value.
-  ```python
-  df_fix.dropna(inplace=True)
-  ```  
-  ![Missing Value](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/missing_value.png?raw=True)
- 
-  Terdapat 534 baris missing value pada kolom userId dan rating. Artinya, ada 534 film yang belum pernah dinilai oleh user. Data ini tidak dapat digunakan untuk membuat rekomendasi film. Oleh karena itu, dengan pertimbangan bahwa jumlah data ini tidak banyak dibandingkan dengan total data film yang ada, data ini akan di-drop.
-  ```python
-  df_fix.dropna(inplace=True)
-  ```
+```python
+df_anime =  df_anime.dropna()
+``` 
  
 ## Modeling
  
 ### Model Content Based Filtering
 Proses:
  
-- Untuk model content based filtering, data yang dibutuhkan hanya data film saja. Oleh karena itu, saya membuat dataframe baru yang hanya berisi data movieId, title, dan genres.
-- Menghapus data yang duplikat karena tidak diperlukan untuk model ini.
-- Satu film dapat dikategorikan ke dalam banyak genre. Genre-genre ini perlu direpresentasikan dalam bentuk matriks untuk memudahkan perhitungan kemiripan film yang satu dengan yang lain.  
-  ![Genres Matrix](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cb_genres_matrix.png?raw=True)
- 
-  Dari output diatas, dapat dilihat bahwa film dengan id 0 dikategorikan film dengan genre Adventure, Animation, Children, dan Comedy.
-- Menghitung cosine similarity untuk mengetahui tingkat kemiripan antar film.  
-  ![Cosine Similarity](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cb_cosine_similarity.png?raw=True)
- 
-  Dari output diatas, dapat dilihat bahwa film Gaudi Afternoon (2001) 0.5% mirip dengan film Heaven Can Wait (1978) tapi tidak mirip sama sekali dengan film Strait-Jacket (1964).
-- Mendapatkan top-20 rekomendasi film.  
-  Film pertama  
-  ![Film 1](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cb_film_1.png?raw=True)  
-  Rekomendasi  
-  ![Rec Film 1](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cb_rec_film_1.png?raw=True)
- 
-  Film kedua  
-  ![Film 2](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cb_film_2.png?raw=True)  
-  Rekomendasi  
-  ![Rec Film 2](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cb_rec_film_2.png?raw=True)
- 
+- TF-IDF Vectorizer
+digunakan pada sistem rekomendasi untuk menemukan representasi fitur penting dari setiap kategori masakan genre.
+```python
+
+tf = TfidfVectorizer()
+tf.fit(df_anime['genre']) 
+```
+
+- fit dan transformasi ke dalam bentuk matriks. 
+```python
+
+tfidf_matrix = tf.fit_transform(df_anime['genre']) 
+tfidf_matrix.shape
+
+```
+output yang dihasilkan yaitu (12017, 47)
+
 **Kelebihan Content Based Filtering:**
 - Model tidak butuh data dari banyak user, karena rekomendasi spesifik untuk satu user.
 - Model dapat memberikan rekomendasi yang mirip dengan preferensi user.
