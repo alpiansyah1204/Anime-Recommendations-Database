@@ -44,22 +44,41 @@ Sumber: [Anime Recommendations Database](https://www.kaggle.com/datasets/CooperU
  
  
 **Exploratory Data Analysis**  
-- Menampilkan data anime  
+- Menampilkan head data anime  
+
+  ![data anime](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/animeheadfirst.png?raw=True)
   
+- menampilakn jumlah genre anime pada dataset
+
+  ![genre](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/genre.png?raw=True)
+  
+- Menampilkan head data rating  
+
+  ![data rating](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/ratingheadfitrst.png?raw=True)
+  
+- pada proyek kali ini hanya menggunakan 5000 data dengan cara menambahkan code 
+
+  ``` df_rating = df_rating.drop(range(20000, 7813737))  ``` 
+  
+- melihat deskripsi pada dataset rating
+
+  ![rating deskripsi](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/ratingdeskripsi.png?raw=True)
+  
+- mengubah nilai rating -1 ke dalam NaN
+
+``` df_rating["rating"].replace({-1: np.nan}, inplace=True)  ``` 
+
+- menghapus baris atau kolom jika bernilai NA.
+
+``` df_rating = df_rating.dropna(axis = 0, how ='any')  ``` 
  
-  movies terdiri dari 3 kolom, yaitu movieId, title, dan genres.
-- Visualisasi genres  
-  ![Genres](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/movies_genres.png?raw=True)
+- menghitung jumlah data null pada df_anime 
+
+ ``` df_anime.isnull().sum() ``` 
  
-  Terdapat 20 genre film. Drama adalah genre film terbanyak, disusul oleh Comedy, Thriller, Romance, Action dan seterusnya.
-- Menampilkan data ratings  
-  ![Ratings](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/ratings.png?raw=True)
+ - mengatasi data kosong dengan cara menghapusnya
  
-  ratings terdiri dari 4 kolom, yaitu userId, movieId, rating, dan timestamp.
-- Cek data ratings  
-  ![Ratings Desc](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/ratings_describe.png?raw=True)
- 
-  Dari output diatas, dapat dilihat bahwa nilai rating terendah adalah 0.5, sedangkan nilai rating tertinggi adalah 5.0.
+ ```df_anime =  df_anime.dropna()``` 
  
 ## Data Preparation
  
