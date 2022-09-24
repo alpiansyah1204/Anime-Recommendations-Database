@@ -180,7 +180,7 @@ visualisasi metrik yang didapat dari model yang dilatih
 ## Kesimpulan
 Dari hasil rekomendasi yang diberikan kedua model tersebut, menurut saya kedua model sudah dapat memberikan rekomendasi sesuai dengan yang diharapkan. Namun, untuk mencapai hasil yang lebih baik lagi.
 
-## REFRENCES
+## References
 **[1]** Gorakala, Suresh K., and Michele Usuelli. Building a Recommendation System with R: Learn the Art of Building Robust and 
 Powerful Recommendation Engines Using R. Packt Publishing, 2015
 
