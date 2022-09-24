@@ -2,36 +2,50 @@
  
 ## Project Overview
  
-Anime adalah animasi komputer buatan tangan yang berasal dari Jepang yang telah menarik banyak pengikut di seluruh dunia. Budaya Jepang telah lama didominasi oleh anime dan manga, dengan gelombang pengakuan yang serupa antar generasi. Lebih beberapa tahun terakhir, pengakuan untuk anime dan manga rekan sketsanya telah tumbuh secara signifikan di Inggris Raya dan karena itu Barat. Karena kemampuannya yang khas untuk tumbuh bersama pemirsa, anime tidak diragukan lagi salah satu alasannya itu telah bertahan dalam ujian waktu dan tumbuh dalam kualitas di seluruh dunia. Meskipun anime sangat disukai di Inggris dan Di negara-negara barat, masih sedikit orang yang tidak memiliki rencana tentang apa itu anime. Makalah ini bertujuan untuk mengembangkan rekomendasi atau sistem pilihan yang menawarkan saran kepada mereka yang baru mengenal dunia anime dengan menggunakan KNN dan SVD algoritma.
+Anime adalah animasi komputer buatan tangan yang berasal dari Jepang yang telah menarik banyak pengikut di seluruh dunia. Budaya Jepang telah lama didominasi oleh anime dan manga, dengan gelombang pengakuan yang serupa antar generasi. Lebih beberapa tahun terakhir, pengakuan untuk anime dan manga rekan sketsanya telah tumbuh secara signifikan di Inggris Raya dan karena itu Barat. Karena kemampuannya yang khas untuk tumbuh bersama pemirsa, anime tidak diragukan lagi salah satu alasannya itu telah bertahan dalam ujian waktu dan tumbuh dalam kualitas di seluruh dunia. Meskipun anime sangat disukai di Inggris dan Di negara-negara barat, masih sedikit orang yang tidak memiliki rencana tentang apa itu anime. proyek ini bertujuan untuk mengembangkan rekomendasi atau sistem pilihan yang menawarkan saran kepada mereka yang baru mengenal dunia anime dengan menggunakan KNN dan SVD algoritma.
 
-Referensi: [Movie Recommendation System](https://www.irjet.net/archives/V8/i5/IRJET-V8I5679.pdf)
+Referensi: [ANIME RECOMMENDATION SYSTEM]([https://www.irjet.net/archives/V8/i5/IRJET-V8I5679.pdf](https://ijcrt.org/papers/IJCRT2201084.pdf))
  
 ## Business Understanding
  
 ### Problem Statements
-- Berdasarkan data film yang ada, bagaimana sistem dapat merekomendasikan film lain yang mirip dengan film tersebut?
-- Berdasarkan data rating yang diberikan pengguna, bagaimana sistem dapat merekomendasikan film lain yang mungkin disukai pengguna dan belum pernah ditonton oleh pengguna?
+- Berdasarkan data anime yang ada, bagaimana sistem dapat merekomendasikan anime lain yang mirip dengan anime tersebut?
+- Berdasarkan data rating yang diberikan pengguna, bagaimana sistem dapat merekomendasikan anime lain yang mungkin disukai pengguna dan belum pernah ditonton oleh pengguna?
  
 ### Goals
-- Menghasilkan rekomendasi film untuk pengguna dengan teknik content-based filtering.
-- Menghasilkan rekomendasi film yang sesuai dengan preferensi pengguna dan belum pernah ditonton pengguna dengan teknik collaborative filtering.
+- Menghasilkan rekomendasi anime untuk pengguna dengan teknik content-based filtering.
+- Menghasilkan rekomendasi anime yang sesuai dengan preferensi pengguna dan belum pernah ditonton pengguna dengan teknik collaborative filtering.
  
 ### Solution Statements
-Saya menggunakan dua teknik / pendekatan sistem rekomendasi, yaitu content-based filtering dan collaborative filtering. Untuk content-based filtering, metrik yang saya gunakan adalah cosine similarity, sedangkan untuk collaborative filtering, metrik yang saya gunakan adalah RMSE.
+Dalam proyek kali ini saya menggunakan dua teknik pendektan sistem rekomendasi,  yaitu content-based filtering dan collaborative filtering. 
+- Menggunakan Content Based Filtering tujuan menggunakan content based filtering yaitu untuk merekomendasikan anime yang mirip dengan anime yang disukai pengguna lain dimasa lalu. hasil dari rekomendasi ini bersifat subjektif karena hanya melihat dari history pengguna terdahulu. model ini dibuat dengan TF-IDF Vectorizer dan Cosine Similarity.
+- Menggunakan Collaborative Based Filtering tujuan menggunakan Collaborative Based Filtering yaitu untuk merekomendasikan anime berdasarkan pendapat komunitas pengguna. model ini tidak memerlukan atribut untuk setiap itemnya pada sistem berbasis konten. model ini akan dibuat menggunakan RecommenderNet. 
+
  
 ## Data Understanding
  
-Dataset yang saya gunakan adalah dataset film dan rating dari MovieLens. Dataset ini terdiri dari 20.000.263 rating dan 465.564 tag pada 27.278 data film oleh 138.493 user. Dataset ini terdiri dari total 6 file terpisah, tag.csv, rating.csv, movie.csv, link.csv, genome_scores.csv, dan genome_tags.csv. Untuk project ini, saya hanya menggunakan 2 file, yaitu movie.csv dan rating.csv.
- 
-Sumber: [MovieLens 20M Dataset](https://www.kaggle.com/datasets/grouplens/movielens-20m-dataset).
+Dataset yang saya gunaka adalah dataset Anime Recommendations Database dari COOPERUNION. dataset ini berisi 12,300 data pada dataframe anime.csv. Selain itu ada juga Dataframe rating.csv berisikan 7.813.737 data. 
+
+Sumber: [Anime Recommendations Database](https://www.kaggle.com/datasets/CooperUnion/anime-recommendations-database).
  
 **Deskripsi Data**:  
-- movies: merupakan informasi mengenai film.
-- ratings: merupakan rating film yang diberikan oleh user.
+- **anime.csv**
+  - anime_id - myanimelist.net's unique id identifying an anime.
+  - name - full name of anime.
+  - genre - comma separated list of genres for this anime.
+  - type - movie, TV, OVA, etc.
+  - episodes - how many episodes in this show. (1 if movie).
+  - rating - average rating out of 10 for this anime.
+  - members - number of community members that are in this anime's "group".
+- **rating.csv**
+  - user_id - non identifiable randomly generated user id.
+  - anime_id - the anime that this user has rated.
+  - rating - rating out of 10 this user has assigned (-1 if the user watched it but didn't assign a rating).
+ 
  
 **Exploratory Data Analysis**  
-- Menampilkan data movies  
-  ![Movies](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/movies.png?raw=True)
+- Menampilkan data anime  
+  
  
   movies terdiri dari 3 kolom, yaitu movieId, title, dan genres.
 - Visualisasi genres  
