@@ -65,7 +65,7 @@ Sumber: [Anime Recommendations Database](https://www.kaggle.com/datasets/CooperU
 ## Data Preparation
 tujuan dari data preparation untuk memastikan bahwa data mentah yang sedang disiapkan untuk diproses dan dianalisis akurat dan konsisten sehingga hasil rekomendasi dan analitik akan valid.
 ### Data Cleaning 
-*Data cleaning* yaitu proses mempersiapkan data untuk analisis dengan menghapus atau memodifikasi data yang tidak benar, tidak lengkap, tidak relevan, diduplikasi, atau diformat dengan tidak benar. pada program ini saya menghapus data tersebut. data yang kosong dopat ditemukan pada *genre* dan *rating*
+*Data cleaning* yaitu proses mempersiapkan data untuk analisis dengan menghapus atau memodifikasi data yang tidak benar, tidak lengkap, tidak relevan, di duplikat, atau diformat dengan tidak benar. pada program ini saya menghapus data tersebut. data yang kosong dapat ditemukan pada *genre* dan *rating*
 ### Data Transform
 *Data Transform* adalah teknik mengubah data dari satu format ke format lainnya. Transformasi Data dapat dibagi menjadi langkah-langkah berikut. Masing-masing langkah ini akan diterapkan berdasarkan kompleksitas transformasi. teknik ini digunakan pada proyek ini seperti : 
 - melakukan persiapan data untuk menyandikan (*encode*) fitur *‘user_id’* dan *‘anime_id’* ke dalam indeks *integer*.
@@ -76,7 +76,7 @@ tujuan dari data preparation untuk memastikan bahwa data mentah yang sedang disi
 ## Modeling
  
 ### Model Content Based Filtering
-Pada content *Based Filtering*, saya menggunakan *TF-IDF Vectorizer* untuk membangun sistem rekomendasi berdasarkan genre anime. Alasannya adalah untuk menemukan representasi fitur penting dari setiap genre anime. Lalu, saya ubah vektor *tf-idf* dalam bentuk matriks dengan fungsi *todense().* Setelah itu, saya menghitung derajat kesamaan (*similarity degree*) antar anime dengan teknik *cosine similarity*. 
+Pada content *Based Filtering*, saya menggunakan *TF-IDF Vectorizer* untuk membangun sistem rekomendasi berdasarkan genre anime. Alasannya adalah untuk menemukan representasi fitur penting dari setiap genre anime. Lalu, saya ubah vektor *tf-idf* dalam bentuk matriks dengan fungsi *todense().* Setelah itu, saya menghitung derajat kesamaan (*similarity degree*) antara anime dengan teknik *cosine similarity*. 
 Proses:
  
 - *TF-IDF Vectorizer*
@@ -132,7 +132,7 @@ Proses:
 **Kekurangan Collaborative Filtering:**  
 - Model membutuhkan data banyak user.
  
- hasil yang didapat dari model yang sudah dibaut mendapatkan hasil seperti berikut 
+ hasil yang didapat dari model yang sudah dibuat mendapatkan hasil seperti berikut 
 
 ![hasil  ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/top%2010%20anime.png?raw=True) 
  
@@ -156,7 +156,7 @@ Rumus RMSE:
  
  
 ### Model Content Based Filtering
-Pada Content Based Filtering, saya mencoba mengevaluasi model saya dengan memakai metrik precision. Maksud dari precision di sini adalah, berapa banyak genre yang sesuai dengan anime yang dipilih / jumlah rekomendasi. Saya membuat sebuah if loop yang akan membuat variabel 'a' bertambah satu jika genre sama persis dengan anime yang dipilih. Kodenya bisa dilihat seperti ini:
+Pada Content Based Filtering, saya mencoba mengevaluasi model saya dengan memakai matrix precision. Maksud dari precision di sini adalah, berapa banyak genre yang sesuai dengan anime yang dipilih / jumlah rekomendasi. Saya membuat sebuah if loop yang akan membuat variabel 'a' bertambah satu jika genre sama persis dengan anime yang dipilih. Kodenya bisa dilihat seperti ini:
 presisi dari model yang dibuat 
 ```python
 a = 0
@@ -181,3 +181,5 @@ visualisasi metrik yang didapat dari model yang dilatih
  
 ## Kesimpulan
 Dari hasil rekomendasi yang diberikan kedua model tersebut, menurut saya kedua model sudah dapat memberikan rekomendasi sesuai dengan yang diharapkan. Namun, untuk mencapai hasil yang lebih baik lagi.
+
+
