@@ -62,6 +62,7 @@ Sumber: [Anime Recommendations Database](https://www.kaggle.com/datasets/CooperU
   ![rating deskripsi](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/ratingdeskripsi.png?raw=True)
 
 ## Data Preparation
+untuk memastikan bahwa data mentah yang sedang disiapkan untuk diproses dan dianalisis akurat dan konsisten sehingga hasil rekomendasi dan analitik akan valid.
 
 - pada proyek kali ini hanya menggunakan 5000 data dengan cara menambahkan code 
 
@@ -120,6 +121,23 @@ tfidf_matrix.todense()
 ```
 ![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/matrik1.png?raw=True)
 
+- Membuat dataframe untuk melihat tf-idf matrix
+```python
+pd.DataFrame(
+    tfidf_matrix.todense(), 
+    columns=tf.get_feature_names(),
+    index=df_anime.name
+).sample(22, axis=1).sample(10, axis=0)
+```
+![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/matrik1.png?raw=True)
+
+- matriks tf-idf untuk beberapa anime dan kategori anime  
+![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/tdifmatrik.png?raw=True)
+
+- matriks kesamaan setiap anime dengan menampilkan nama restoran dalam 5 sampel kolom (axis = 1) dan 20 sampel baris (axis=0).
+![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/testsample.png?raw=True)
+
+
 **Kelebihan Content Based Filtering:**
 - Model tidak butuh data dari banyak user, karena rekomendasi spesifik untuk satu user.
 - Model dapat memberikan rekomendasi yang mirip dengan preferensi user.
@@ -130,23 +148,49 @@ tfidf_matrix.todense()
 ### Model Collaborative Filtering
 Proses:
  
-- Melakukan shuffling data agar distribusi data menjadi random dan menghindari overfitting.
-- Encoding data userId dan movieId. Hal ini dilakukan untuk memudahkan identifikasi data user dan film yang ada.
-- Split data, 90% untuk training, dan 10% untuk validation. Hal ini dilakukan untuk menguji keakuratan model yang telah dilatih.  
-- Membuat arsitektur model.  
-  ![Arsitektur Model](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cl_model.png?raw=True)
-- Training model menggunakan binary crossentropy loss function, adam optimizer dan metrik RMSE.  
-  ![Training Model](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cl_training.png?raw=True)
+- Menyandikan (encode) fitur user_id dan anime_id ke dalam indeks integer.
+- Memetakan user_id dan anime_id ke dataframe yang berkaitan lalu melakukan cek beberapa hal dalam data seperti jumlah user, jumlah anime, dan mengubah nilai rating menjadi float
+output yang didapat "Number of User: 234, Number of Anime: 2666, Min Rating: 1.0, Max Rating: 10.0"
+- Membagi data menjadi data training dan validasi dengan komposisi 80:20. lalu memetakan (mapping) data user dan anime menjadi satu value
+- membuat fungsi Rekomendasi
+```python
+class RecommenderNet(tf.keras.Model):
+
+  def __init__(self, num_users, num_anime, embedding_size, **kwargs):
+    super(RecommenderNet, self).__init__(**kwargs)
+    self.num_users = num_users
+    self.num_anime = num_anime
+    self.embedding_size = embedding_size
+    self.user_embedding = layers.Embedding(
+        num_users,
+        embedding_size,
+        embeddings_initializer = 'he_normal',
+        embeddings_regularizer = keras.regularizers.l2(1e-6)
+    )
+    self.user_bias = layers.Embedding(num_users, 1)
+    self.anime_embedding = layers.Embedding(
+        num_anime,
+        embedding_size,
+        embeddings_initializer = 'he_normal',
+        embeddings_regularizer = keras.regularizers.l2(1e-6)
+    )
+    self.anime_bias = layers.Embedding(num_anime, 1)
  
-  Dari hasil training selama 3 epochs, diperoleh nilai error RMSE 0.1557, dan 0.1748 untuk data validasi.
+  def call(self, inputs):
+    user_vector = self.user_embedding(inputs[:,0])
+    user_bias = self.user_bias(inputs[:, 0])
+    anime_vector = self.anime_embedding(inputs[:, 1])
+    anime_bias = self.anime_bias(inputs[:, 1])
  
-  ![Visualisasi Metrik](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cl_visualisasi_metrik.png?raw=True)
-- Mendapatkan top-20 rekomendasi film.  
-  Film yang pernah ditonton dan diberi rating tinggi oleh user 17759.  
-  ![Watched Movie](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cl_watched.png?raw=True)  
-  Rekomendasi untuk user 17759.  
-  ![Rec for User](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/cl_rec.png?raw=True)
+    dot_user_anime = tf.tensordot(user_vector, anime_vector, 2) 
  
+    x = dot_user_anime + user_bias + anime_bias
+    
+    return tf.nn.sigmoid(x)
+```
+- Lalu pada pembuatan model, saya menggunakan RecommenderNet. Setelah itu saya me-compile model ini menggunakan Binary Crossentropy untuk menghitung loss function, Adam (Adaptive Moment Estimation) sebagai optimizer, dan root mean squared error (RMSE) sebagai metrics evaluation. Lalu, saya melatih model dengan batch size = 8, dan epoch = 100. Untuk mendapatkan rekomendasi, saya membuat fungsi untuk mendapatkan anime yang belum ditonton oleh user tersebut dengan menyocokkan anime_id yang berada di anime.csv dan rating.csv . 
+
+
 **Kelebihan Collaborative Filtering:**  
 - Model dapat merekomendasikan hal baru untuk di-explore oleh user.
 - Model dapat memberikan rekomendasi kepada user berdasarkan preferensi user lain yang mungkin mirip.
@@ -161,18 +205,43 @@ Metrik yang saya gunakan untuk model content based filtering adalah cosine simil
 **Cosine Similarity**:  
 Cosine Similarity diperoleh dari mengukur sudut cos antara dua vektor yang diproyeksikan dalam ruang multidimensi.  
 Rumus Cosine Similarity:  
-![Rumus Cosine Sim](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/rumus_cosine_sim.png?raw=True)
  
 **Root Mean Squared Error**:  
 Root Mean Squared Error atau RMSE diperoleh dari menghitung akar dari jumlah selisih kuadrat rata-rata nilai sebenarnya dengan nilai prediksi.  
 Rumus RMSE:  
-![Rumus RMSE](https://github.com/ricky-alan/dicoding-ml-terapan/blob/main/S2_Recommendation_System/image/rumus_rmse.png?raw=True)
  
 ### Model Content Based Filtering
-Model dapat memberikan rekomendasi yang cukup baik dengan skor cosine similarity rata-rata diatas 0.9 untuk film pertama dan diatas 0.7 untuk film kedua. Perbedaan skor ini dapat disebabkan karena data yang tidak seimbang. Namun, secara keseluruhan, model dapat memberikan rekomendasi film yang mirip dengan film yang diinputkan.
- 
+pada pengujian Model COntent Based rekomendasi yang diberikan cukup baik 
+
+```python
+df_anime[df_anime.name.eq('Boku no Hero Academia')]
+```
+|anime_id	| name	| genre|	type|	episodes|	rating|	members
+| ------- | :---------------------------------: | :----------------------------------------------: | :-----: | :-----: | :-----: | :-----: |
+|31964|	Boku no Hero Academia	|Action, Comedy, School, Shounen, Super Power	|TV|	13	|8.36|	282002|
+- hasil uji coba 
+![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/result%20bokunohero.png?raw=True)
+
+presisi dari model yang dibuat 
+```python
+a = 0
+
+for row in result.itertuples():
+  if (row.genre == 'Action', 'Comedy', 'School', 'Shounen', 'Super Power'):
+    a += 1
+
+precision = (a/5)*100
+print("presisi darin model yang dibuat {}%".format(precision))
+```
+output "presisi darin model yang dibuat 100.0%"
+
+
 ### Model Collaborative Filtering
-Dari proses training yang dilakukan selama 3 epochs, diperoleh nilai error 0.1557, dan 0.1748 untuk data validasi. Model dapat memberikan rekomendasi yang cukup baik. Terdapat beberapa film dengan genre yang mirip dengan film yang pernah ditonton user, namun juga ada beberapa film dengan genre baru yang belum pernah ditonton user.
+Dari proses training yang dilakukan selama 100 epochs, diperoleh nilai error 0.1129 , dan 0.1518 untuk data validasi. Model dapat memberikan rekomendasi yang cukup baik. Terdapat beberapa anime dengan genre yang mirip dengan anime yang pernah ditonton user, namun juga ada beberapa anime dengan genre baru yang belum pernah ditonton user.
+visualisasi metrik yang didapat dari model yang dilatih 
+![visuak ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/visualisasi.png?raw=True) 
+lalu hasil yang didapat 
+![hasil  ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/top%2010%20anime.png?raw=True) 
  
 ## Kesimpulan
-Dari hasil rekomendasi yang diberikan kedua model tersebut, menurut saya kedua model sudah dapat memberikan rekomendasi sesuai dengan yang diharapkan. Namun, untuk mencapai hasil yang lebih baik lagi, masih banyak hal yang harus dilakukan, terutama memperbanyak dataset untuk meningkatkan sebaran data dan meningkatkan performa model collaborative filtering.    
+Dari hasil rekomendasi yang diberikan kedua model tersebut, menurut saya kedua model sudah dapat memberikan rekomendasi sesuai dengan yang diharapkan. Namun, untuk mencapai hasil yang lebih baik lagi.
