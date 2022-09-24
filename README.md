@@ -43,22 +43,44 @@ Sumber: [Anime Recommendations Database](https://www.kaggle.com/datasets/CooperU
  
  
 **Exploratory Data Analysis**  
-- Menampilkan *head data anime  
+- Menampilkan *head* data anime 
 
-  ![data anime](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/animeheadfirst.png?raw=True)
-  
+|    |anime_id|	name|	genre|	type|	episodes|	rating|	members|
+|:---|:--------:|:----------------------------:|:------------------------------------------------------:|:-----:|:-----:|:-----:|:-----:|
+|0|32281|	Kimi no Na wa.	|Drama, Romance, School, Supernatural	|Movie	|1	|9.37|	200630|
+|1|5114|	Fullmetal Alchemist: Brotherhood	|Action, Adventure, Drama, Fantasy, Magic, Mili...|TV|64|9.26|793665|
+|2|28977|	Gintama°	|Action, Comedy, Historical, Parody, Samurai, S...	|TV	|51|	9.25|	114262|
+|3|9253|	Steins;Gate	|Sci-Fi, Thriller	|TV	|24	|9.17|	673572|
+|4|9969|	Gintama&#039;	|Action, Comedy, Historical, Parody, Samurai, S...	|TV|	51|	9.16|151266	
+
+
 - menampilkan jumlah *genre* anime pada *dataset
 
   ![genre](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/genre.png?raw=True)
   pada gambar di atas bisa dilihat bahwa total *genre* anime pada dataset ada 83 *genre* dari total 12,300 
 - Menampilkan head data rating  
 
-  ![data rating](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/ratingheadfitrst.png?raw=True)
+|   | user_id | anime_id | rating |
+|:---:|:---------:|:----------:|:--------:|
+| 0 | 1       | 20       | -1     |
+| 1 | 1       | 24       | -1     |
+| 2 | 1       | 79       | -1     |
+| 3 | 1       | 226      | -1     |
+| 4 | 1       | 241      | -1     |
   
   
 - melihat deskripsi pada dataset rating
 
-  ![rating deskripsi](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/ratingdeskripsi.png?raw=True)
+ 
+
+|          |    count |    mean |         std |         min |  25% |    50% |    75% |     max |
+|---------:|--------:|------------:|------------:|-----:|-------:|-------:|--------:|---------|
+|  user_id | 20000.0 |   122.93475 |   76.474535 |  1.0 |   51.0 |  123.0 |   196.0 |   247.0 |
+| anime_id | 20000.0 | 10462.25390 | 8995.668737 |  1.0 | 2034.0 | 9074.0 | 16512.0 | 34240.0 |
+|   rating | 20000.0 |     6.10085 |    3.852638 | -1.0 |    5.0 |    8.0 |     9.0 |    10.0 |
+|          |         |             |             |      |        |        |         |         |
+|          |         |             |             |      |        |        |         |         |
+
 
 ## Data Preparation
 tujuan dari data preparation untuk memastikan bahwa data mentah yang sedang disiapkan untuk diproses dan dianalisis akurat dan konsisten sehingga hasil rekomendasi dan analitik akan valid.
@@ -110,8 +132,14 @@ df_anime[df_anime.name.eq('Boku no Hero Academia')]
 | ------- | :---------------------------------: | :----------------------------------------------: | :-----: | :-----: | :-----: | :-----: |
 |31964|	Boku no Hero Academia	|Action, Comedy, School, Shounen, Super Power	|TV|	13	|8.36|	282002|
 - hasil uji coba 
-![tfidf_matrix ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/result%20bokunohero.png?raw=True)
 
+|      |                      name                      |             genre                                 |
+|-----:|-----------------------------------------------:|--------------------------------------------------:|
+|    0 | Boku no Hero Academia: Jump Festa 2016 Special |      Action, Comedy, School, Shounen, Super Power |
+|    1 |                                   Kill la Kill |               Action, Comedy, School, Super Power |
+|    2 |                           Kill la Kill Special |               Action, Comedy, School, Super Power |
+|    3 |                                   Code:Breaker | Action, Comedy, School, Shounen, Super Power, ... |
+|    4 |                         Katekyo Hitman Reborn! |              Action, Comedy, Shounen, Super Power |
  
 ### Model Collaborative Filtering
 Proses:
