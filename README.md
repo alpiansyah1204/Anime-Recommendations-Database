@@ -201,9 +201,37 @@ output "presisi darin model yang dibuat 100.0%"
 Dari proses training yang dilakukan selama 100 epochs, diperoleh nilai error 0.1129 , dan 0.1518 untuk data validasi. Model dapat memberikan rekomendasi yang cukup baik. Terdapat beberapa anime dengan genre yang mirip dengan anime yang pernah ditonton user, namun juga ada beberapa anime dengan genre baru yang belum pernah ditonton user.
 visualisasi metrik yang didapat dari model yang dilatih 
 
-![visuak ](https://github.com/alpiansyah1204/ML-Terapan2/blob/main/images/visualisasi.png?raw=True) 
 
 
+
+- Anime with high ratings from user
+
+|                                                   name |                                                               genre |
+|-------------------------------------------------------:|--------------------------------------------------------------------:|
+|                     Code Geass: Hangyaku no Lelouch R2 |                 Action, Drama, Mecha, Military, Sci-Fi, Super Power |
+|                       Phantom: Requiem for the Phantom |                                     Action, Drama, Seinen, Thriller |
+|                                    High School DxD New |               Action, Comedy, Demons, Ecchi, Harem, Romance, School |
+|                                             Elfen Lied | Action, Drama, Horror, Psychological, Romance, Seinen, Supernatural |
+| Campione!: Matsurowanu Kamigami to Kamigoroshi no Maou |                       Comedy, Ecchi, Fantasy, Harem, Magic, Romance |
+
+
+
+
+ - Top 10 anime recommendation
+ 
+ |                                                                        name |                                                        genre |
+|----------------------------------------------------------------------------:|-------------------------------------------------------------:|
+|                         Gintama Movie: Kanketsu-hen - Yorozuya yo Eien Nare | Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen |
+|                                                                  Cross Game |                       Comedy, Drama, Romance, School, Sports |
+|                                                                  SKET Dance |                                      Comedy, School, Shounen |
+|                                                             Kimi to Boku. 2 |       Comedy, Drama, Romance, School, Shounen, Slice of Life |
+|                                              Katekyo Hitman Reborn! Special |                                              Comedy, Shounen |
+| Pokemon Black and White 2: Introduction Movie                               | Action, Fantasy, Kids                                        |
+| Saki                                                                        | Game, School, Slice of Life                                  |
+| The iDOLM@STER Cinderella Girls 2nd Season                                  | Comedy, Drama, Music                                         |
+| One Piece: Nenmatsu Tokubetsu Kikaku! Mugiwara no Luffy Oyabun Torimonochou | Adventure, Comedy, Fantasy, Shounen                          |
+| Kyou no Asuka Show                                                          | Comedy, Ecchi, Seinen                                        |
+ 
  
 ## Kesimpulan
 Dari hasil rekomendasi yang diberikan kedua model tersebut, menurut saya kedua model sudah dapat memberikan rekomendasi sesuai dengan yang diharapkan. Namun, untuk mencapai hasil yang lebih baik lagi.
