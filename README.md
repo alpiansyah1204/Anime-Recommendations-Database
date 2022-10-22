@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Rizqi Alpiansyah
+# Machine Learning - Rizqi Alpiansyah
  
 ## Project Overview
  
